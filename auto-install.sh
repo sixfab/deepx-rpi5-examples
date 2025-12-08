@@ -2,7 +2,7 @@
 
 # DEEPX Raspberry Pi 5 Automatic Installation Script
 # This script installs DEEPX NPU drivers and runtime on Raspberry Pi 5
-# Author: DEEPX Community
+# Author: Sixfab Community | DEEPX Raspberry Pi 5 Examples
 # Version: 1.0
 
 set -e  # Exit on any error
