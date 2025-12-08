@@ -7,7 +7,9 @@ Why this repo exists:
 - Offer community project seeds you can fork and extend.
 
 Quick links
-- Website: https://www.deepx.ai/
+- Sixfab Website: https://sixfab.com
+- Sixfab Docs: https://docs.sixfab.com
+- DEEPX Website: https://deepx.ai
 - Runtime & tools: https://github.com/DEEPX-AI/dx_rt
 - Driver: https://github.com/DEEPX-AI/dx_rt_npu_linux_driver
 - Full toolchain: https://github.com/DEEPX-AI/dx-all-suite
