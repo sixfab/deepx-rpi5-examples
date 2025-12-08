@@ -49,10 +49,11 @@ Notes on inputs
 - For USB webcams: most demos accept `--usbcam`.
 
 Examples included
-- Detection (light and full versions — the full one includes tracker and multi-resolution support).
-- Pose estimation (realtime pose keypoints).
-- Instance segmentation (masks + boxes).
-- Image denoising.
+- Detection
+- Pose estimation
+- Instance segmentation
+- Image denoising
+- Classification
 
 Each example has usage notes and optional arguments in `docs/basic-examples.md`.
 
