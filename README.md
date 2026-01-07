@@ -62,3 +62,12 @@ We welcome community improvements. If you have a demo, model optimization tips, 
 
 Short disclaimer
 These examples are provided for demonstration purposes. They’re intended to help you experiment with DEEPX NPU features on Raspberry Pi 5, not as production-ready systems. If something misbehaves, please open an issue in the repository.
+
+--- 
+
+## License
+
+This project is distributed under the **MIT License**, with the exception of the **`basic_examples/deepx-official-examples/`** directory.
+
+* **`basic_examples/deepx-official-examples/` Directory:** All rights reserved by DEEPX.
+* **All other contents:** Licensed under the MIT License.
