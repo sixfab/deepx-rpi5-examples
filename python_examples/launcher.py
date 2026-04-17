@@ -15,6 +15,7 @@ import os
 import subprocess
 import sys
 import time
+from pathlib import Path
 from typing import Dict, List, Tuple
 
 try:
@@ -29,7 +30,23 @@ except ImportError:
 from config_loader import get_demo_config
 from tui_input import get_keypress, wait_any_key
 
-DEMOS_ROOT = os.path.dirname(os.path.abspath(__file__))
+SCRIPT_DIR = Path(__file__).parent.resolve()
+RESOURCES_DIR = SCRIPT_DIR.parent / "resources"
+DEMOS_ROOT = str(SCRIPT_DIR)
+
+
+def _resolve_cfg_path(path: str) -> str:
+    """Resolve a config-supplied path to an absolute filesystem path.
+
+    Relative entries are anchored at the launcher directory so the launcher
+    behaves identically regardless of the caller's CWD.
+    """
+    if not path:
+        return ""
+    p = Path(path)
+    if not p.is_absolute():
+        p = (SCRIPT_DIR / p).resolve()
+    return str(p)
 
 CATEGORY_FOLDERS: Dict[str, str] = {
     "OBJECT DETECTION": "object_detection",
@@ -125,7 +142,8 @@ def _build_status_cache() -> Dict[str, bool]:
     for _cat, _name, key, _tag, _color in DEMOS:
         cfg = get_demo_config(key)
         model = getattr(cfg, "model_path", "") or ""
-        cache[key] = bool(model) and os.path.isfile(model)
+        resolved = _resolve_cfg_path(model)
+        cache[key] = bool(resolved) and os.path.isfile(resolved)
     return cache
 
 
@@ -207,7 +225,7 @@ def build_menu(selected: int, status_cache: Dict[str, bool]) -> Group:
     sel_key = DEMOS[selected][2]
     cfg = get_demo_config(sel_key)
     model_path = getattr(cfg, "model_path", "") or "(no model_path)"
-    size = _human_size(model_path)
+    size = _human_size(_resolve_cfg_path(model_path))
     parts.append(Text(""))
     parts.append(Text.from_markup(
         f"[dim]selected:[/dim] [bold]{sel_name}[/bold]  "
@@ -222,14 +240,14 @@ def _build_cmd(demo_path: str, cfg) -> List[str]:
     source = getattr(cfg, "input_source", "webcam")
     cmd += ["--source", source]
     if source == "video" and getattr(cfg, "video_path", None):
-        cmd += ["--path", cfg.video_path]
+        cmd += ["--path", _resolve_cfg_path(cfg.video_path)]
     elif source == "image" and getattr(cfg, "image_path", None):
-        cmd += ["--path", cfg.image_path]
+        cmd += ["--path", _resolve_cfg_path(cfg.image_path)]
 
     if getattr(cfg, "model_path", None):
-        cmd += ["--model", cfg.model_path]
+        cmd += ["--model", _resolve_cfg_path(cfg.model_path)]
     if getattr(cfg, "label_path", None):
-        cmd += ["--labels", cfg.label_path]
+        cmd += ["--labels", _resolve_cfg_path(cfg.label_path)]
     if getattr(cfg, "confidence_threshold", None) is not None:
         cmd += ["--conf", str(cfg.confidence_threshold)]
     if getattr(cfg, "iou_threshold", None) is not None:
@@ -242,7 +260,7 @@ def launch_demo(index: int, status_cache: Dict[str, bool]) -> None:
     cfg = get_demo_config(key)
     model_path = getattr(cfg, "model_path", "") or ""
     source = (getattr(cfg, "input_source", "webcam") or "webcam").upper()
-    size = _human_size(model_path)
+    size = _human_size(_resolve_cfg_path(model_path))
 
     console.clear()
 

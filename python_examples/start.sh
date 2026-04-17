@@ -34,12 +34,16 @@ dim()   { echo -e "${DIM}    $*${RESET}"; }
 # ── Paths ─────────────────────────────────────────────────────────────────────
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+RESOURCES_DIR="$(dirname "$SCRIPT_DIR")/resources"
+MODELS_DIR="$RESOURCES_DIR/models"
+VIDEOS_DIR="$RESOURCES_DIR/videos"
 VENV_PATH="/opt/sixfab-dx/venv"
 VENV_PYTHON="$VENV_PATH/bin/python3"
 VENV_PIP="$VENV_PATH/bin/pip"
 REQUIREMENTS="$SCRIPT_DIR/requirements.txt"
-DOWNLOAD_SCRIPT="$SCRIPT_DIR/download.sh"
 LAUNCHER="$SCRIPT_DIR/launcher.py"
+
+export RESOURCES_DIR MODELS_DIR VIDEOS_DIR
 
 # ── Banner ────────────────────────────────────────────────────────────────────
 
@@ -50,7 +54,7 @@ echo ""
 
 # ── Step 1 — Install sixfab-dx ────────────────────────────────────────────────
 
-step "Step 1/5 — DeepX SDK (sixfab-dx)"
+step "Step 1/4 — DeepX SDK (sixfab-dx)"
 
 if command -v dxrt-cli &>/dev/null; then
     info "sixfab-dx is already installed."
@@ -84,7 +88,7 @@ fi
 
 # ── Step 2 — Verify venv ──────────────────────────────────────────────────────
 
-step "Step 2/5 — Python environment"
+step "Step 2/4 — Python environment"
 
 if [[ ! -f "$VENV_PYTHON" ]]; then
     error "venv not found at $VENV_PATH\n    Try reinstalling sixfab-dx: sudo apt install --reinstall sixfab-dx"
@@ -95,7 +99,7 @@ dim "$("$VENV_PYTHON" --version)"
 
 # ── Step 3 — Install Python dependencies ─────────────────────────────────────
 
-step "Step 3/5 — Python dependencies"
+step "Step 3/4 — Python dependencies"
 
 if [[ ! -f "$REQUIREMENTS" ]]; then
     error "requirements.txt not found at $REQUIREMENTS"
@@ -105,22 +109,9 @@ dim "Installing from requirements.txt..."
 "$VENV_PIP" install -q -r "$REQUIREMENTS"
 info "Python dependencies are up to date."
 
-# ── Step 4 — Download models and videos ──────────────────────────────────────
+# ── Step 4 — Launch ───────────────────────────────────────────────────────────
 
-step "Step 4/5 — Models and videos"
-
-if [[ ! -f "$DOWNLOAD_SCRIPT" ]]; then
-    error "download.sh not found at $DOWNLOAD_SCRIPT"
-fi
-
-chmod +x "$DOWNLOAD_SCRIPT"
-
-# Pass venv activation so download.sh inherits the environment
-bash "$DOWNLOAD_SCRIPT"
-
-# ── Step 5 — Launch ───────────────────────────────────────────────────────────
-
-step "Step 5/5 — Launching demo menu"
+step "Step 4/4 — Launching demo menu"
 
 if [[ ! -f "$LAUNCHER" ]]; then
     error "launcher.py not found at $LAUNCHER"

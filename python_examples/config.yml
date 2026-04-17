@@ -1,7 +1,7 @@
 global:
   input_source: "video"
-  video_path: "videos/snowboard.mp4"
-  image_path: "/home/alpon/sample.jpg"
+  video_path: "../resources/videos/snowboard.mp4"
+  image_path: "../resources/images/sample.jpg"
   webcam_index: 0
   show_fps: true
   window_name: "Sixfab | DeepX Python Demo"
@@ -10,55 +10,55 @@ global:
 
 demos:
   scrfd:
-    model_path: "models/SCRFD500M_1.dxnn"
+    model_path: "../resources/models/SCRFD500M_1.dxnn"
   yolov10:
-    model_path: "models/YOLOV10N-1.dxnn"
+    model_path: "../resources/models/YOLOV10N-1.dxnn"
   yolov11:
-    model_path: "models/YOLOV11N.dxnn"
+    model_path: "../resources/models/YOLOV11N.dxnn"
   yolov12:
-    model_path: "models/YOLOV12N-1.dxnn"
+    model_path: "../resources/models/YOLOV12N-1.dxnn"
   yolov26:
-    model_path: "models/yolo26n-1.dxnn"
+    model_path: "../resources/models/yolo26n-1.dxnn"
   yolov26obb:
-    model_path: "models/yolo26n-obb.dxnn"
+    model_path: "../resources/models/yolo26n-obb.dxnn"
   yolov26pose:
-    model_path: "models/yolo26n-pose.dxnn"
+    model_path: "../resources/models/yolo26n-pose.dxnn"
   yolov5:
-    model_path: "models/YOLOV5S-1.dxnn"
+    model_path: "../resources/models/YOLOV5S-1.dxnn"
   yolov5face:
-    model_path: "models/YOLOV5S_Face-1.dxnn"
+    model_path: "../resources/models/YOLOV5S_Face-1.dxnn"
   yolov5pose:
-    model_path: "models/YOLOV5Pose640_1.dxnn"
+    model_path: "../resources/models/YOLOV5Pose640_1.dxnn"
   yolov7:
-    model_path: "models/YoloV7.dxnn"
+    model_path: "../resources/models/YoloV7.dxnn"
   yolov8:
-    model_path: "models/YoloV8N.dxnn"
+    model_path: "../resources/models/YoloV8N.dxnn"
   yolov9:
-    model_path: "models/YOLOV9S.dxnn"
+    model_path: "../resources/models/YOLOV9S.dxnn"
   yolox:
-    model_path: "models/YOLOX-S_1.dxnn"
+    model_path: "../resources/models/YOLOX-S_1.dxnn"
   yolov26cls:
-    model_path: "models/yolo26n-cls.dxnn"
+    model_path: "../resources/models/yolo26n-cls.dxnn"
   deeplabv3:
-    model_path: "models/DeepLabV3PlusMobileNetV2_2.dxnn"
+    model_path: "../resources/models/DeepLabV3PlusMobileNetV2_2.dxnn"
   yolov26seg:
-    model_path: "models/yolo26n-seg.dxnn"
+    model_path: "../resources/models/yolo26n-seg.dxnn"
   yolov8seg:
-    model_path: "models/YOLOV8N_SEG-1.dxnn"
+    model_path: "../resources/models/YOLOV8N_SEG-1.dxnn"
   scrfd_ppu:
-    model_path: "models/SCRFD500M_PPU.dxnn"
+    model_path: "../resources/models/SCRFD500M_PPU.dxnn"
   yolov5_ppu:
-    model_path: "models/YOLOV5S_PPU.dxnn"
+    model_path: "../resources/models/YOLOV5S_PPU.dxnn"
   yolov5pose_ppu:
-    model_path: "models/YOLOV5Pose_PPU.dxnn"
+    model_path: "../resources/models/YOLOV5Pose_PPU.dxnn"
   yolov7_ppu:
-    model_path: "models/YoloV7_PPU.dxnn"
+    model_path: "../resources/models/YoloV7_PPU.dxnn"
   yolov8_async:
-    model_path: "models/YoloV8N.dxnn"
+    model_path: "../resources/models/YoloV8N.dxnn"
 
   trespassing:
-    model_path: "models/yolov8n.dxnn"
-    video_path: "videos/snowboard.mp4"
+    model_path: "../resources/models/yolov8n.dxnn"
+    video_path: "../resources/videos/snowboard.mp4"
     polygon:
       - [0.313, 0.556]
       - [0.688, 0.556]
@@ -74,8 +74,8 @@ demos:
     last_activation: "sigmoid"
 
   people_tracking:
-    model_path: "models/YOLOV5S_PPU.dxnn"
-    video_path: "videos/mall-complete.mp4"
+    model_path: "../resources/models/YOLOV5S_PPU.dxnn"
+    video_path: "../resources/videos/mall-complete.mp4"
     confidence_threshold: 0.45
     max_missing_frames: 10
     max_distance: 0.1
@@ -97,8 +97,8 @@ demos:
         heights: [90, 198, 326]
 
   smart_traffic:
-    model_path: "models/yolov8l-ppu.dxnn"
-    video_path: "videos/traffic.mp4"
+    model_path: "../resources/models/yolov8l-ppu.dxnn"
+    video_path: "../resources/videos/traffic.mp4"
     confidence_threshold: 0.45
     max_missing_frames: 15
     max_match_distance: 0.1
@@ -116,8 +116,8 @@ demos:
     last_activation: "sigmoid"
 
   store_queue_analysis:
-    model_path: "models/yolov8l-ppu.dxnn"
-    video_path: "videos/store-queue.mp4"
+    model_path: "../resources/models/yolov8l-ppu.dxnn"
+    video_path: "../resources/videos/store-queue.mp4"
     confidence_threshold: 0.45
     max_missing_frames: 10
     max_distance: 0.1
@@ -145,7 +145,7 @@ demos:
     last_activation: "sigmoid"
 
   hand_landmark:
-    model_path: "models/hand-landmark.dxnn"
+    model_path: "../resources/models/hand-landmark.dxnn"
     confidence_threshold: 0.3
     iou_threshold: 0.4
     kpt_count: 21
@@ -155,8 +155,8 @@ demos:
     input_source: "webcam"
 
   face_alignment:
-    model_path: "models/YOLOV5S_Face-1.dxnn"
-    emotion_model_path: "models/efficientnet_affectnet.dxnn"
+    model_path: "../resources/models/YOLOV5S_Face-1.dxnn"
+    emotion_model_path: "../resources/models/efficientnet_affectnet.dxnn"
     input_width: 640
     input_height: 640
     confidence_threshold: 0.25
@@ -176,16 +176,16 @@ demos:
     input_source: "rpicam"
 
   pose_estimation:
-    model_path: "models/YOLOV5Pose_PPU.dxnn"
+    model_path: "../resources/models/YOLOV5Pose_PPU.dxnn"
     input_width: 640
     input_height: 640
     confidence_threshold: 0.15
     iou_threshold: 0.4
     kpt_count: 17
-    video_path: "videos/pilates.mp4"
+    video_path: "../resources/videos/pilates.mp4"
 
   mask_detection:
-    model_path: "models/mask_detection_yolov5_ppu.dxnn"
+    model_path: "../resources/models/mask_detection_yolov5_ppu.dxnn"
     input_width: 640
     input_height: 640
     confidence_threshold: 0.3
@@ -198,7 +198,7 @@ demos:
     webcam_index: 0
 
   ppe_detection:
-    model_path: "models/ppe-detection-v11.dxnn"
+    model_path: "../resources/models/ppe-detection-v11.dxnn"
     input_width: 640
     input_height: 640
     confidence_threshold: 0.3
@@ -218,7 +218,7 @@ demos:
     webcam_index: 0
 
   conveyor_band:
-    model_path: "models/conveyor-images-v12.dxnn"
+    model_path: "../resources/models/conveyor-images-v12.dxnn"
     input_width: 640
     input_height: 640
     confidence_threshold: 0.3
@@ -229,21 +229,21 @@ demos:
       - "metal"
       - "paper"
       - "plastic"
-    video_path: "videos/conveyor-band.mp4"
+    video_path: "../resources/videos/conveyor-band.mp4"
 
   privacy_masking:
-    model_path: "models/YOLOv5s_512.dxnn"
+    model_path: "../resources/models/YOLOv5s_512.dxnn"
     input_width: 512
     input_height: 512
     confidence_threshold: 0.3
     iou_threshold: 0.4
     target_classes:
       - "person"
-    video_path: "videos/mall2.mp4"
+    video_path: "../resources/videos/mall2.mp4"
     blur_kernel_size: 51
 
   multi_channel_4:
-    model_path: "models/YOLOv5s_512.dxnn"
+    model_path: "../resources/models/YOLOv5s_512.dxnn"
     input_width: 512
     input_height: 512
     confidence_threshold: 0.3
@@ -263,7 +263,7 @@ demos:
         widths:  [116, 156, 373]
         heights: [90, 198, 326]
     channels:
-      - {source: "video", path: "videos/360p/7_360p.avi"}
-      - {source: "video", path: "videos/360p/8_360p.avi"}
-      - {source: "video", path: "videos/360p/10_360p.avi"}
-      - {source: "video", path: "videos/360p/11_360p.avi"}
+      - {source: "video", path: "../resources/videos/360p/7_360p.avi"}
+      - {source: "video", path: "../resources/videos/360p/8_360p.avi"}
+      - {source: "video", path: "../resources/videos/360p/10_360p.avi"}
+      - {source: "video", path: "../resources/videos/360p/11_360p.avi"}
