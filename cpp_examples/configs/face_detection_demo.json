@@ -1,0 +1,13 @@
+{
+    "model_path": "resources/models/YOLOV5S_Face-1.dxnn",
+    "source_type": "camera",
+    "source_path": "",
+    "camera_index": 0,
+    "input_width": 640,
+    "input_height": 640,
+    "conf_threshold": 0.5,
+    "iou_threshold": 0.4,
+    "label_path": "",
+    "window_title": "DeepX Face Detection",
+    "show_fps": true
+}

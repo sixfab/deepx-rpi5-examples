@@ -1,0 +1,12 @@
+{
+    "model_path": "resources/models/YOLOV11N.dxnn",
+    "source_type": "video",
+    "source_path": "resources/videos/snowboard.mp4",
+    "input_width": 640,
+    "input_height": 640,
+    "conf_threshold": 0.3,
+    "iou_threshold": 0.45,
+    "label_path": "",
+    "window_title": "YOLOv11 Object Detection",
+    "show_fps": true
+}

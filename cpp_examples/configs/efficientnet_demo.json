@@ -1,0 +1,10 @@
+{
+    "model_path": "resources/models/EfficientNetB0_4.dxnn",
+    "source_type": "video",
+    "source_path": "resources/videos/snowboard.mp4",
+    "input_width": 224,
+    "input_height": 224,
+    "label_path": "",
+    "window_title": "EfficientNet Classification",
+    "show_fps": true
+}
