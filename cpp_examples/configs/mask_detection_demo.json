@@ -1,0 +1,13 @@
+{
+    "model_path": "resources/models/mask_detection_yolov5_ppu.dxnn",
+    "source_type": "camera",
+    "source_path": "",
+    "camera_index": 0,
+    "input_width": 640,
+    "input_height": 640,
+    "conf_threshold": 0.4,
+    "iou_threshold": 0.45,
+    "label_path": "",
+    "window_title": "Mask Detection",
+    "show_fps": true
+}

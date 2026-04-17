@@ -1,0 +1,10 @@
+{
+    "model_path": "resources/models/DeepLabV3PlusMobileNetV2_2.dxnn",
+    "source_type": "video",
+    "source_path": "resources/videos/snowboard.mp4",
+    "input_width": 513,
+    "input_height": 513,
+    "label_path": "",
+    "window_title": "DeepLabV3+ Semantic Segmentation",
+    "show_fps": true
+}

@@ -1,0 +1,12 @@
+{
+    "model_path": "resources/models/SCRFD500M_PPU.dxnn",
+    "source_type": "video",
+    "source_path": "resources/videos/dance-group.mov",
+    "input_width": 640,
+    "input_height": 640,
+    "conf_threshold": 0.5,
+    "iou_threshold": 0.45,
+    "label_path": "",
+    "window_title": "SCRFD Face Detection",
+    "show_fps": true
+}
