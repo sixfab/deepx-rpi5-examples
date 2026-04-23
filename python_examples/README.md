@@ -111,9 +111,13 @@ is ready to use.
 >
 > ```bash
 > # Install numpy wheel first (required dependency)
-> pip install /opt/sixfab-dx/wheels/numpy*.whl
 > # Then install the DX engine
-> pip install /opt/sixfab-dx/wheels/dx_engine*.whl
+> # For python 3.13
+> pip install /opt/sixfab-dx/wheels/numpy-2.4.4-cp313-cp313-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl
+> pip install /opt/sixfab-dx/wheels/dx_engine-3.3.0-cp313-cp313-linux_aarch64.whl
+> # For python 3.11
+> pip install /opt/sixfab-dx/wheels/numpy-2.4.4-cp311-cp311-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl
+> pip install /opt/sixfab-dx/wheels/dx_engine-3.3.0-cp311-cp311-linux_aarch64.whl
 > ```
 
 > All commands in this README assume the venv is activated.
