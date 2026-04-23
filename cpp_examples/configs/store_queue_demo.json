@@ -1,0 +1,23 @@
+{
+    "model_path": "resources/models/yolov8n.dxnn",
+    "source_type": "video",
+    "source_path": "resources/videos/store-queue.mp4",
+    "input_width": 640,
+    "input_height": 640,
+    "conf_threshold": 0.45,
+    "iou_threshold": 0.45,
+    "label_path": "",
+    "window_title": "DeepX — Store Queue Analysis",
+    "show_fps": true,
+    "regions": [
+        [[0.537, 0.143], [0.625, 0.143], [0.666, 0.501], [0.551, 0.501]],
+        [[0.754, 0.139], [0.881, 0.139], [0.972, 0.389], [0.852, 0.389]],
+        [[0.328, 0.217], [0.383, 0.217], [0.352, 0.593], [0.273, 0.593]]
+    ],
+    "wait_thresholds": {
+        "green": 7,
+        "yellow": 15
+    },
+    "max_missing_frames": 10,
+    "max_distance": 0.1
+}

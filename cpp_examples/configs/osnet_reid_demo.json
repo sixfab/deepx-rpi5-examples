@@ -1,0 +1,13 @@
+{
+    "model_path": "resources/models/YOLOV5S_PPU.dxnn",
+    "model_path_2": "resources/models/osnet_x0_5_market_256x128.dxnn",
+    "source_type": "video",
+    "source_path": "resources/videos/mall-complete.mp4",
+    "input_width": 640,
+    "input_height": 640,
+    "conf_threshold": 0.3,
+    "iou_threshold": 0.45,
+    "label_path": "",
+    "window_title": "OSNet Person Re-ID",
+    "show_fps": true
+}

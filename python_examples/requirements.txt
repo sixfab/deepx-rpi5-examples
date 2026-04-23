@@ -1,0 +1,20 @@
+# Runtime dependencies for the DeepX demo collection.
+# Install everything with: pip install -r requirements.txt
+#
+# NOTE: The DeepX SDK Python binding (`dx_engine`) is NOT on PyPI.
+# It must be installed separately from the device-specific package
+# shipped with your DeepX hardware (typically inside the dx_rt
+# distribution). Follow the vendor instructions for that one — the
+# packages below cover everything else.
+
+numpy>=1.21
+opencv-python>=4.5
+packaging>=21.0
+pyyaml>=5.1
+rich>=13.0
+
+# Optional, only needed when INPUT_SOURCE == "rpicam"
+# (Raspberry Pi camera). Install with:
+#   sudo apt install -y python3-picamera2
+# rather than via pip, because the upstream wheel pulls in libcamera.
+# picamera2

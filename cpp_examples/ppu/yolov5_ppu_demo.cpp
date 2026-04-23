@@ -1,0 +1,107 @@
+// ============================================================
+// yolov5_ppu_demo.cpp  --  Educational PPU demo for YOLOv5
+//
+// YOLOv5 is anchor-based: the PPU runs the anchor decode + NMS
+// using the configured anchor layers (8/16/32 strides). Output
+// layout is identical to the YOLOv8 PPU demo — one BBOX stream
+// with {cx, cy, w, h, score, label} per surviving detection.
+//
+// Compare with yolov8_ppu_demo: the only runtime differences
+// are (a) AnchorLayers passed into the decoder wrapper and (b)
+// the model itself. Everything downstream (unletterboxing,
+// drawing) is shared.
+// Usage: ./yolov5_ppu_demo [--model path] [--source video|camera]
+//                         [--path file] [--conf 0.3] [--iou 0.45]
+// ============================================================
+
+#include "config_loader.h"
+#include "demo_runner.h"
+#include "input_source.h"
+#include "label_sets.h"
+#include "ppu_decode.h"
+#include "sdk_utils.h"
+#include "visualizer.h"
+
+#include <dxrt/dxrt_api.h>
+#include <cstdio>
+
+class YOLOv5PpuDetector {
+public:
+    explicit YOLOv5PpuDetector(const DemoParams& p)
+        : m_inputH(p.inputHeight), m_inputW(p.inputWidth),
+          m_conf(p.confThreshold), m_iou(p.iouThreshold),
+          m_anchors(ppu::defaultYolov5Anchors())
+    {
+        m_engine = sdk::loadEngine(p.modelPath, m_inputH, m_inputW);
+        if (!m_engine) throw std::runtime_error("Failed to load YOLOv5 model");
+    }
+
+    std::vector<ppu::Detection> infer(const cv::Mat& bgr) {
+        auto lb    = sdk::letterbox(bgr, m_inputH, m_inputW);
+        auto reqId = m_engine->RunAsync(lb.image.data, nullptr, nullptr);
+        auto outs  = m_engine->Wait(reqId);
+
+        if (m_firstFrame) {
+            std::fprintf(stderr, "[PPU] first frame: %zu output tensor(s)\n", outs.size());
+            for (size_t i = 0; i < outs.size(); ++i) {
+                const auto& t = outs[i];
+                std::fprintf(stderr, "[PPU]   tensor[%zu] shape=[", i);
+                const auto& sh = t->shape();
+                for (size_t k = 0; k < sh.size(); ++k)
+                    std::fprintf(stderr, "%s%ld", k ? "," : "", (long)sh[k]);
+                std::fprintf(stderr, "] type=%d elem_size=%u\n",
+                             (int)t->type(), (unsigned)t->elem_size());
+            }
+            std::fprintf(stderr, "[PPU] using %zu anchor layer(s)\n", m_anchors.size());
+            m_firstFrame = false;
+        }
+
+        auto dets = ppu::decodeYolov5Ppu(outs, m_inputW, m_inputH,
+                                         m_conf, m_iou, m_anchors);
+
+        std::vector<cv::Rect2f> boxes;
+        boxes.reserve(dets.size());
+        for (const auto& d : dets) boxes.push_back(d.box);
+        auto px = sdk::unletterboxBoxes(boxes, lb.gain, lb.pad, bgr.size());
+        for (size_t i = 0; i < dets.size(); ++i) dets[i].box = px[i];
+        return dets;
+    }
+
+private:
+    std::unique_ptr<dxrt::InferenceEngine> m_engine;
+    int   m_inputH, m_inputW;
+    float m_conf, m_iou;
+    std::vector<ppu::AnchorLayer> m_anchors;
+    bool  m_firstFrame = true;
+};
+
+int main(int argc, char** argv) {
+    auto p    = loadConfig("", argc, argv);
+    auto labs = sdk::loadLabels(p.labelPath, labels::COCO80);
+
+    YOLOv5PpuDetector model(p);
+    InputSource       source(parseSourceType(p.sourceType), p.sourcePath, p.cameraIndex);
+    if (!source.isOpened()) {
+        std::fprintf(stderr, "[ERROR] Failed to open source: %s\n", p.sourcePath.c_str());
+        return 1;
+    }
+
+    DemoConfig cfg;
+    cfg.windowTitle = p.windowTitle;
+    cfg.showFps     = p.showFps;
+
+    runDemo(source, [&](cv::Mat& frame) {
+        auto dets = model.infer(frame);
+        std::vector<cv::Rect2f> boxes;
+        std::vector<float>      scores;
+        std::vector<int>        classIds;
+        for (const auto& d : dets) {
+            boxes.push_back(d.box);
+            scores.push_back(d.score);
+            classIds.push_back(d.classId);
+        }
+        vis::drawDetections(frame, boxes, scores, classIds, labs);
+    }, cfg);
+
+    return 0;
+}
