@@ -144,15 +144,26 @@ global:
   image_path: "videos/frame.jpg"       # loops until 'q' is pressed
 ```
 
-#### Raspberry Pi camera
+#### Raspberry Pi camera (rpicam)
+
+Install the required library first:
+```bash
+sudo apt install -y python3-picamera2
+
+# or 
+
+pip install picamera2
+```
+
+Set `input_source` to `rpicam` in `config.yml`:
 ```yaml
 global:
   input_source: "rpicam"
 ```
 
-Verify camera is available before use:
+Verify camera is detected before use:
 ```bash
-libcamera-hello --list-cameras
+rpicam-hello --list-cameras
 sudo raspi-config   # Interface Options → Camera → Enable  (if not detected)
 ```
 
@@ -276,7 +287,7 @@ python_examples/
 
 **Camera not found**
 - USB: run `ls /dev/video*` and update `webcam_index`
-- libcamera: run `libcamera-hello --list-cameras`
+- rpicam: run `rpicam-hello --list-cameras`
 
 **ImportError: No module named 'dxrt'**
 - The venv is not active. Run: `source /opt/sixfab-dx/venv/bin/activate`

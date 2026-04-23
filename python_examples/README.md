@@ -262,7 +262,18 @@ global:
 
 > The image will loop — press `q` to quit.
 
-#### Raspberry Pi camera (libcamera)
+#### Raspberry Pi camera (rpicam)
+
+Install the required library first:
+
+```bash
+sudo apt install -y python3-picamera2
+
+# or 
+
+pip install picamera2```
+
+Then set `input_source` to `rpicam` in `config.yml`:
 
 ```yaml
 global:
@@ -272,7 +283,7 @@ global:
 > Verify the camera is detected before use:
 >
 > ```bash
-> libcamera-hello --list-cameras
+> rpicam-hello --list-cameras
 > ```
 >
 > Enable the camera interface if needed:
@@ -375,7 +386,7 @@ python object_detection/yolov8_demo.py --model models/YoloV8N.dxnn --conf 0.3
 
 **Camera not found**
 - Webcam: run `ls /dev/video*` and update `webcam_index` in `config.yml`.
-- libcamera: run `libcamera-hello --list-cameras` to verify detection.
+- rpicam: run `rpicam-hello --list-cameras` to verify detection.
 - Try a different `webcam_index` (`0`, `1`, `2`...).
 
 **ImportError: No module named 'dxrt'**

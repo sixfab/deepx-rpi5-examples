@@ -59,6 +59,37 @@ Examples:
 ./build/object_detection/yolov8_demo --source video --path my_clip.mp4 --conf 0.4
 ```
 
+### Raspberry Pi camera (rpicam)
+
+Verify the camera is detected before use:
+```bash
+rpicam-hello --list-cameras
+```
+
+Use `--source libcamera` with `--path` in `idx:W:H:fps` format (all fields optional):
+
+```bash
+# Camera index 0, 1280×720, 30 fps
+./build/object_detection/yolov8_demo --source libcamera --path 0:1280:720:30
+
+# Use defaults (1536×864, 30 fps)
+./build/object_detection/yolov8_demo --source libcamera --path 0
+```
+
+To make rpicam the default for a demo, edit its `configs/<demo>.json`:
+```json
+{
+  "source": "libcamera",
+  "source_path": "0:1280:720:30"
+}
+```
+
+> libcamera support is enabled by default when CMake finds it via `pkg-config`.
+> If you get `libcamera support not compiled in`, rebuild with:
+> ```bash
+> cmake .. -DENABLE_LIBCAMERA=ON && make -j$(nproc)
+> ```
+
 ## Adding a new demo
 
 1. Put `<demo_name>.cpp` in the matching category directory

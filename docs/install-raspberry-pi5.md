@@ -207,7 +207,7 @@ sudo modprobe dx_npu
 ```bash
 # List available cameras
 ls /dev/video*
-libcamera-hello --list-cameras
+rpicam-hello --list-cameras
 
 # Enable the camera interface if needed
 sudo raspi-config  # → Interface Options → Camera → Enable
