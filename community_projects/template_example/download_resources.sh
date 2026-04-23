@@ -1,7 +1,7 @@
 #!/bin/bash
 # Template Example Resource Download Script
 
-echo "📥 Downloading resources for Template Example..."
+echo "Downloading resources for Template Example..."
 
 # Create directories
 mkdir -p models
@@ -9,7 +9,7 @@ mkdir -p resources
 mkdir -p output
 
 # Download placeholder model (replace with actual model URLs when available)
-echo "🔄 Setting up model directory..."
+echo "Setting up model directory..."
 
 # Placeholder model file
 cat > models/README.md << 'EOF'
@@ -38,7 +38,7 @@ dx_compiler --input model.onnx --output models/model.dxnn
 EOF
 
 # Create sample resource files
-echo "📄 Setting up sample resources..."
+echo "Setting up sample resources..."
 
 cat > resources/classes.txt << 'EOF'
 person
@@ -123,11 +123,11 @@ hair drier
 toothbrush
 EOF
 
-echo "✅ Template resources setup completed!"
+echo "Template resources setup completed!"
 echo ""
-echo "📋 Next steps:"
+echo "Next steps:"
 echo "1. Add your DEEPX model files to models/ directory"
 echo "2. Update config.yaml with your model path"
 echo "3. Run: python template_example.py"
 echo ""
-echo "📖 For more information, see README.md"
+echo "For more information, see README.md"

@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# DEEPX Raspberry Pi 5 Automatic Installation Script
+# Sixfab | DEEPX Raspberry Pi 5 Automatic Installation Script
 # This script installs DEEPX NPU drivers and runtime on Raspberry Pi 5
-# Author: Sixfab Community | DEEPX Raspberry Pi 5 Examples
+# Author: Sixfab | DEEPX Raspberry Pi 5 Examples
 # Version: 1.0
 
 set -e  # Exit on any error
@@ -36,7 +36,28 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
-# Check prerequisites
+# Check DEEPX NPU runtime first
+print_info "Checking DEEPX NPU runtime..."
+
+if ! command_exists dxrt-cli; then
+    print_error "DEEPX NPU runtime is not installed."
+    echo ""
+    echo "  Please install the sixfab-dx package first to use the demos and DEEPX NPU runtime."
+    echo ""
+    exit 1
+fi
+
+if ! dxrt-cli -s > /dev/null 2>&1; then
+    print_error "DEEPX NPU runtime is installed but not working properly."
+    echo ""
+    echo "  Please make sure the sixfab-dx package is correctly installed and the NPU is recognized."
+    echo ""
+    exit 1
+fi
+
+print_success "DEEPX NPU runtime is working"
+
+# Check other prerequisites
 print_info "Checking prerequisites..."
 
 if ! command_exists python3; then
@@ -44,154 +65,104 @@ if ! command_exists python3; then
     exit 1
 fi
 
-if ! command_exists git; then
-    print_error "Git is not installed. Please install Git first."
+if ! command_exists curl; then
+    print_error "curl is not installed. Please install curl first."
     exit 1
 fi
 
-if ! command_exists wget; then
-    print_error "wget is not installed. Please install wget first."
+if ! command_exists tar; then
+    print_error "tar is not installed. Please install tar first."
+    exit 1
+fi
+
+if ! command_exists sed; then
+    print_error "sed is not installed. Please install sed first."
     exit 1
 fi
 
 print_success "Prerequisites check completed"
 
 # Set working directory
-WORK_DIR="/home/$USER"
-VENV_NAME="deepx"
-VENV_PATH="$WORK_DIR/$VENV_NAME"
+VENV_PATH="/opt/sixfab-dx/venv"
 CURRENT_DIR="$(pwd)"
 
-print_info "Starting DEEPX installation process..."
-print_info "Working directory: $WORK_DIR"
-print_info "Virtual environment: $VENV_PATH"
+print_info "Starting DEEPX examples setup..."
 
-cd $CURRENT_DIR/basic_examples/src/models/
-wget https://github.com/sixfab/deepx-rpi5-examples/releases/download/v0.1/sample_models.zip
-unzip sample_models.zip
-rm sample_models.zip
+# Step 0: Download and extract resources
+print_info "Step 0: Checking resources (images, models, videos)..."
+RESOURCES_DIR="$CURRENT_DIR/resources"
+mkdir -p "$RESOURCES_DIR"
 
-cd $CURRENT_DIR
+for asset in images models videos; do
+    ASSET_DIR="$RESOURCES_DIR/$asset"
+    if [ -d "$ASSET_DIR" ] && [ "$(ls -A "$ASSET_DIR" 2>/dev/null)" ]; then
+        print_warning "Skipping $asset — already exists in $ASSET_DIR"
+        continue
+    fi
 
-# Step 1: Create Python virtual environment
-print_info "Step 1: Creating Python virtual environment with system site packages..."
-cd "$WORK_DIR"
-python3 -m venv --system-site-packages "$VENV_NAME"
+    url="https://github.com/sixfab/deepx-rpi5-examples/releases/download/v0.3/${asset}.tar.gz"
+    print_info "Downloading ${asset}.tar.gz..."
+    curl -L --retry 3 --retry-delay 5 --max-time 300 \
+        --progress-bar \
+        -o "$RESOURCES_DIR/${asset}.tar.gz" \
+        "$url"
 
-# Activate virtual environment
-print_info "Activating virtual environment..."
+    if [ ! -s "$RESOURCES_DIR/${asset}.tar.gz" ]; then
+        print_error "Download failed or file is empty: ${asset}.tar.gz"
+        exit 1
+    fi
+
+    print_info "Extracting ${asset}.tar.gz..."
+    tar -xzf "$RESOURCES_DIR/${asset}.tar.gz" -C "$RESOURCES_DIR"
+    rm "$RESOURCES_DIR/${asset}.tar.gz"
+    print_success "${asset} downloaded and extracted"
+done
+
+print_success "Resources ready at $RESOURCES_DIR"
+
+# Step 1: Activate existing virtual environment
+print_info "Step 1: Activating virtual environment at $VENV_PATH..."
+
+if [ ! -f "$VENV_PATH/bin/activate" ]; then
+    print_error "Virtual environment not found at $VENV_PATH"
+    echo ""
+    echo "  Please make sure the sixfab-dx package is correctly installed."
+    echo ""
+    exit 1
+fi
+
 source "$VENV_PATH/bin/activate"
 print_success "Virtual environment activated"
 
-# Step 2: Install DEEPX NPU Linux Driver
-print_info "Step 2: Installing DEEPX NPU Linux Driver..."
-cd "$WORK_DIR"
+# Step 2: Install Python examples requirements
+print_info "Step 2: Installing Python requirements..."
+cd "$CURRENT_DIR"
+pip install -r python_examples/requirements.txt
+print_success "Python requirements installed"
 
-if [ -d "dx_rt_npu_linux_driver" ]; then
-    print_warning "Driver directory already exists. Removing old installation..."
-    rm -rf dx_rt_npu_linux_driver
-fi
-
-git clone https://github.com/DEEPX-AI/dx_rt_npu_linux_driver
-cd "$WORK_DIR/dx_rt_npu_linux_driver"
-
-print_info "Running driver installation script..."
-echo "n" | ./install.sh
-
-print_info "Verifying driver installation..."
-if lsmod | grep -q dx; then
-    print_success "DEEPX driver loaded successfully"
-    lsmod | grep dx
-else
-    print_warning "DEEPX driver not found in loaded modules"
-fi
-
-# Step 3: Install DEEPX Runtime
-print_info "Step 3: Installing DEEPX Runtime..."
-cd "$WORK_DIR"
-
-if [ -d "dx_rt" ]; then
-    print_warning "Runtime directory already exists. Removing old installation..."
-    rm -rf dx_rt
-fi
-
-git clone https://github.com/DEEPX-AI/dx_rt
-cd "$WORK_DIR/dx_rt"
-
-print_info "Running runtime installation script..."
-./install.sh --all
-
-print_info "Building DEEPX runtime..."
-./build.sh
-
-# Step 4: Install Python package
-print_info "Step 4: Installing DEEPX Python package..."
-cd "$WORK_DIR/dx_rt/python_package"
-pip install .
-
-print_success "DEEPX installation completed successfully!"
-
-# Step 5: Verification
-print_info "Step 5: Verifying installation..."
-python3 -c "
-try:
-    import dx_engine
-    print('✅ DEEPX Runtime imported successfully')
-except ImportError as e:
-    print('❌ DEEPX Runtime import failed:', e)
-    exit(1)
-"
-
-print_success "Installation verification completed"
-
-# Step 6: Install DEEPX Official Examples
-print_info "Step 6: DEEPX Official Examples (dx_app)"
-echo ""
-read -p "Do you want to install dx_app (DEEPX Examples)? (yes/no): " install_choice
-
-if [[ "$install_choice" =~ ^[Yy][Ee][Ss]$ ]] || [[ "$install_choice" =~ ^[Yy]$ ]]; then
-    print_info "Installing dx_app to $WORK_DIR directory..."
-    cd "$WORK_DIR"
-    
-    if [ -d "dx_app" ]; then
-        print_warning "dx_app directory already exists. Removing old installation..."
-        rm -rf dx_app
-    fi
-    
-    git clone https://github.com/DEEPX-AI/dx_app
-    cd dx_app
-    
-    print_info "Installing Python requirements..."
-    pip install -r ./templates/python/requirements.txt
-    
-    print_info "Running dx_app installation script..."
-    ./install.sh --all
-    
-    print_info "Building dx_app..."
-    ./build.sh
-    
-    print_info "Setting up dx_app..."
-    ./setup.sh
-    
-    print_success "dx_app installation completed in $WORK_DIR/dx_app!"
-else
-    print_info "Skipping dx_app installation."
-fi
+# Step 3: Build C++ examples
+print_info "Step 3: Building C++ examples..."
+cd "$CURRENT_DIR/cpp_examples"
+bash setup.sh
+cd "$CURRENT_DIR"
+print_success "C++ examples built successfully"
 
 # Final instructions
 echo ""
 print_info "=== Installation Summary ==="
-print_success "DEEPX has been successfully installed!"
+print_success "DEEPX examples have been successfully set up!"
 echo ""
 print_info "To activate the environment in future sessions, run:"
 echo "  source $VENV_PATH/bin/activate"
 echo ""
-print_info "To test your installation, try running:"
-echo "  python3 -c 'import dx_engine; print(\"DEEPX Ready!\")'"
+print_info "To start the Python examples:"
+echo "  cd $CURRENT_DIR && bash python_examples/start.sh"
+echo ""
+print_info "To start the C++ examples:"
+echo "  cd $CURRENT_DIR && bash cpp_examples/start.sh"
 echo ""
 print_info "For examples and documentation, check:"
-echo "  - basic_examples/ directory"
-echo "  - basic_examples/deepx-official-examples/dx_app/ directory"
-echo "  - docs/basic-examples.md"
+echo "  - python_examples/ directory"
+echo "  - cpp_examples/ directory"
 echo ""
 print_success "Happy coding!"

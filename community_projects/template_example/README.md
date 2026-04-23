@@ -221,11 +221,12 @@ Anticipated performance benchmarks on Raspberry Pi 5 with DEEPX NPU:
 #### 1. NPU Detection Failure
 ```bash
 # Verify NPU status
-ls /dev/deepx* || ls /dev/dx*
-lsmod | grep deepx
+ls /dev/dxrt0*
+lsmod | grep dx
 
 # Resolution: Reload DEEPX kernel module
-sudo modprobe deepx-npu
+sudo modprobe dx_dma
+sudo modprobe dxrt_driver
 ```
 
 #### 2. Camera Initialization Failure
@@ -245,18 +246,6 @@ free -h
 
 # Activate performance governor
 echo performance | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
-```
-
-### Debugging
-
-Activate verbose debug logging:
-```bash
-python template_example.py --debug --verbose
-```
-
-Monitor log output:
-```bash
-tail -f template_example.log
 ```
 
 ## Contribution Guidelines
@@ -280,39 +269,6 @@ tail -f template_example.log
 - Verify all tests pass
 - Validate on Raspberry Pi 5 hardware
 - Assess performance impact
-
-## API Reference
-
-### TemplateProcessor Class
-
-```python
-class TemplateProcessor:
-    def __init__(self, config_path: str = "config.yaml")
-    def load_model(self, model_path: str) -> bool
-    def process_frame(self, frame: np.ndarray) -> Tuple[np.ndarray, List[Dict]]
-    def run_inference(self, frame: np.ndarray) -> List[Dict]
-    def draw_results(self, frame: np.ndarray, results: List[Dict]) -> np.ndarray
-```
-
-### ConfigManager Class
-
-```python
-class ConfigManager:
-    def __init__(self, config_path: str)
-    def load_config(self) -> Dict
-    def save_config(self, config: Dict) -> None
-    def get_value(self, key_path: str, default=None) -> Any
-    def set_value(self, key_path: str, value: Any) -> None
-```
-
-### Utility Functions
-
-```python
-def setup_camera(source: str, resolution: Tuple[int, int]) -> cv2.VideoCapture
-def create_output_directory(path: str) -> str
-def save_results(results: List[Dict], format: str, path: str) -> None
-def calculate_fps(frame_times: List[float]) -> float
-```
 
 ## Support
 
