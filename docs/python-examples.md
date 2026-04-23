@@ -144,16 +144,22 @@ global:
   image_path: "videos/frame.jpg"       # loops until 'q' is pressed
 ```
 
-#### Raspberry Pi camera
+#### Raspberry Pi camera (rpicam)
+
+Install the required library first:
+```bash
+sudo apt install -y python3-picamera2
+```
+
+Set `input_source` to `rpicam` in `config.yml`:
 ```yaml
 global:
   input_source: "rpicam"
 ```
 
-Verify camera is available before use:
+Verify camera is detected before use:
 ```bash
-libcamera-hello --list-cameras
-sudo raspi-config   # Interface Options → Camera → Enable  (if not detected)
+rpicam-hello --list-cameras
 ```
 
 ### Per-Demo Overrides
