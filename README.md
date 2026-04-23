@@ -5,7 +5,7 @@ Compact, practical AI inference examples for the Raspberry Pi 5 using the DEEPX 
 **Quick links**
 - [Sixfab Website](https://sixfab.com) | [Sixfab Docs](https://docs.sixfab.com)
 - [DEEPX Website](https://deepx.ai)
-- Runtime & tools: [dx_rt](https://github.com/DEEPX-AI/dx_rt)
+- Runtime & tools: [sixfab-dx](https://github.com/sixfab/sixfab_dx) [dx_rt](https://github.com/DEEPX-AI/dx_rt)
 - Driver: [dx_rt_npu_linux_driver](https://github.com/DEEPX-AI/dx_rt_npu_linux_driver)
 - Full toolchain: [dx-all-suite](https://github.com/DEEPX-AI/dx-all-suite)
 
