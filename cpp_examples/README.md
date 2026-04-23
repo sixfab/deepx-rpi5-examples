@@ -15,8 +15,8 @@ YAML. Each demo is a single-file executable you can read end-to-end.
 ## Quick start
 
 ```bash
-git clone <this-repo>
-cd <this-repo>/cpp_examples
+git clone https://github.com/sixfab/deepx-rpi5-examples.git
+cd deepx-rpi5-examples/cpp_examples
 ./setup.sh
 ./build/object_detection/yolov8_demo
 ```
