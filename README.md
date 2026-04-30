@@ -113,6 +113,25 @@ All demos accept the same set of input sources:
 
 ---
 
+## Demo Gallery
+
+| | |
+|:---:|:---:|
+| **YOLOv8** — object detection | **YOLO Pose** — pose estimation |
+| ![YOLOv8](docs/src/YOLOv8.gif) | ![YOLOPose](docs/src/YOLOPose.gif) |
+| **YOLOv8 Instance Segmentation** | **DeepLabV3 Semantic Segmentation** |
+| ![YOLOv8-InstanceSegmentation](docs/src/YOLOv8-InstanceSegmentation.gif) | ![DeepLabV3-SemanticSegmentation](docs/src/DeepLabV3-SemanticSegmentation.gif) |
+| **SCRFD Face Detection** | **YOLOv5 — PPU accelerated** |
+| ![SCRFD-FaceDetection](docs/src/SCRFD-FaceDetection.gif) | ![YOLOv5-PPU](docs/src/YOLOv5-PPU.gif) |
+| **YOLOv8 — PPU accelerated** | **YOLOv8 — Async inference** |
+| ![YOLOv8-PPU](docs/src/YOLOv8-PPU.gif) | ![YOLOv8-ASYNC](docs/src/YOLOv8-ASYNC.gif) |
+| **OSNet Re-ID** | **People Tracking** |
+| ![OSNet](docs/src/OSNet.gif) | ![PeopleTracking](docs/src/PeopleTracking.gif) |
+| **Smart Traffic Count** | **Queue Analysis** |
+| ![SmartTrafficCount](docs/src/SmartTrafficCount.gif) | ![QueueAnalysis](docs/src/QueueAnalysis.gif) |
+
+---
+
 ## Community and Contribution
 
 Community improvements are welcome. If you have a demo, model optimization tip, or pipeline to share, add it under `community_projects/` and update `community_projects/community_projects.md` with usage notes. See the template at `community_projects/template_example/` for the expected structure.
