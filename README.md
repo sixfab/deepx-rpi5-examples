@@ -30,17 +30,43 @@ deepx-rpi5-examples/
 
 Install the DEEPX runtime first via the Sixfab APT repository:
 
+### Install the apt-repo-sixfab package
+
 ```bash
-# Add the Sixfab GPG key
-wget -qO - https://sixfab.github.io/sixfab_dx/public.gpg | sudo gpg --dearmor -o /usr/share/keyrings/sixfab-dx.gpg
+wget https://github.com/sixfab/sixfab_dx/releases/download/v0.1/apt-repo-sixfab.deb
+sudo dpkg -i apt-repo-sixfab.deb
+```
 
-# Add the APT repository
-echo "deb [signed-by=/usr/share/keyrings/sixfab-dx.gpg] https://sixfab.github.io/sixfab_dx trixie main" | sudo tee /etc/apt/sources.list.d/sixfab-dx.list
+### Install sixfab-dx package
 
-# Install sixfab-dx (runtime + Python wheels + pre-built venv)
+The sixfab-dx package automatically installs the DEEPX runtime on the system.
+
+```bash
 sudo apt update && sudo apt install sixfab-dx
+```
+### Enable PCIe Gen 3 for optimal performance
 
-# Verify the NPU is recognized
+To get the best inference throughput from the DX-M1 NPU, open the boot configuration file:
+
+```bash
+sudo nano /boot/firmware/config.txt
+```
+
+Add the following lines at the end of the file:
+
+```bash
+dtparam=pciex1
+dtparam=pciex1_gen=3
+```
+
+Save and exit (Ctrl+X, then Y, then Enter), then reboot:
+
+```bash
+sudo reboot
+```
+
+### Verify the NPU is recognized
+```bash
 dxrt-cli -s
 ```
 
@@ -51,8 +77,8 @@ See [docs/install-raspberry-pi5.md](docs/install-raspberry-pi5.md) for full hard
 Once `sixfab-dx` is installed, run the setup script to download models and build the C++ examples:
 
 ```bash
-git clone https://github.com/sixfab/deepx-rpi5-examples.git
-cd deepx-rpi5-examples
+git clone https://github.com/sixfab/sixfab-dx-examples.git
+cd sixfab-dx-examples
 ./auto-install.sh
 ```
 
@@ -67,6 +93,38 @@ After setup, activate the environment for every new session:
 ```bash
 source /opt/sixfab-dx/venv/bin/activate
 ```
+
+After setup, activate the environment for every new session:
+
+```bash
+source /opt/sixfab-dx/venv/bin/activate
+```
+
+> **Note:** This activates the shared Sixfab virtual environment. If you prefer to use your own isolated environment, you can create one and install the required wheels manually:
+>
+> ```bash
+> python3 -m venv ~/my-venv
+> source ~/my-venv/bin/activate
+> ```
+>
+> Pre-built wheels for `dx_engine` and `numpy` are available under `/opt/sixfab-dx/wheels/`:
+>
+> ```bash
+> ls /opt/sixfab-dx/wheels/
+> # dx_engine-3.3.0-cp311-cp311-linux_aarch64.whl
+> # dx_engine-3.3.0-cp313-cp313-linux_aarch64.whl
+> # numpy-2.4.4-cp311-cp311-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl
+> # numpy-2.4.4-cp313-cp313-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl
+> ```
+>
+> Install the wheels matching your Python version (`cp311` → Python 3.11, `cp313` → Python 3.13):
+>
+> ```bash
+> pip install /opt/sixfab-dx/wheels/numpy-2.4.4-cp311-cp311-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl
+> pip install /opt/sixfab-dx/wheels/dx_engine-3.3.0-cp311-cp311-linux_aarch64.whl
+> ```
+>
+> To check your Python version: `python3 --version`
 
 ---
 
