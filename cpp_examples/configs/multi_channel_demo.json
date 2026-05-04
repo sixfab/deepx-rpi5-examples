@@ -8,9 +8,9 @@
     "window_title": "Multi-Channel Demo",
     "show_fps": true,
     "channels": [
-        {"path": "resources/videos/360p/7_360p.avi"},
-        {"path": "resources/videos/360p/8_360p.avi"},
-        {"path": "resources/videos/360p/10_360p.avi"},
-        {"path": "resources/videos/360p/11_360p.avi"}
+        {"path": "../resources/videos/360p/7_360p.avi"},
+        {"path": "../resources/videos/360p/8_360p.avi"},
+        {"path": "../resources/videos/360p/10_360p.avi"},
+        {"path": "../resources/videos/360p/11_360p.avi"}
     ]
 }
