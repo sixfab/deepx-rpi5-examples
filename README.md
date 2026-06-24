@@ -94,12 +94,6 @@ After setup, activate the environment for every new session:
 source /opt/sixfab-dx/venv/bin/activate
 ```
 
-After setup, activate the environment for every new session:
-
-```bash
-source /opt/sixfab-dx/venv/bin/activate
-```
-
 > **Note:** This activates the shared Sixfab virtual environment. If you prefer to use your own isolated environment, you can create one and install the required wheels manually:
 >
 > ```bash
